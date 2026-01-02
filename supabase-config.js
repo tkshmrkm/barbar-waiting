@@ -1,13 +1,13 @@
 // Supabase設定
-const SUPABASE_URL = 'https://qtnqcupqfgmheeapbzja.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0bnFjdXBxZmdtaGVlYXBiemphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjczNTA1NTAsImV4cCI6MjA4MjkyNjU1MH0.-7PY7aT1gKVbrLJW38YhWH9Eun8Wh7e32oIy_O2c4P4';
+// ビルド時に __SUPABASE_URL__ と __SUPABASE_ANON_KEY__ が置換される
+const SUPABASE_URL = '__SUPABASE_URL__';
+const SUPABASE_ANON_KEY = '__SUPABASE_ANON_KEY__';
 
 // Supabaseクライアント初期化（CDN版）
-// CDNで読み込まれたsupabaseライブラリからcreateClientを取得
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // app.jsで使うためにグローバル変数を上書き
 supabase = supabaseClient;
 
 // デバッグ用
-console.log('Supabase初期化完了');
+console.log('Supabase初期化完了:', SUPABASE_URL);
