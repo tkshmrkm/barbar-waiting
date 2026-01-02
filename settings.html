@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>店舗設定</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div id="settingsView" class="view active">
+            <header class="settings-header">
+                <a href="index.html" class="back-link">← 戻る</a>
+                <h1>⚙️ 店舗設定</h1>
+            </header>
+
+            <main class="settings-main">
+            <!-- 店舗基本情報 -->
+            <section class="settings-section">
+                <h2>🏪 店舗情報</h2>
+                
+                <div class="form-group">
+                    <label for="shopName">店舗名</label>
+                    <input type="text" id="shopName" class="form-input" placeholder="例: ヘアーステージ K&M">
+                </div>
+                
+                <div class="form-group">
+                    <label for="shopAddress">住所</label>
+                    <input type="text" id="shopAddress" class="form-input" placeholder="例: 京都府京都市伏見区久我本町11-172">
+                </div>
+                
+                <div class="form-group">
+                    <label for="shopPhone">電話番号</label>
+                    <input type="tel" id="shopPhone" class="form-input" placeholder="例: 075-123-4567">
+                </div>
+            </section>
+
+            <!-- 待合設定 -->
+            <section class="settings-section">
+                <h2>💺 待合設定</h2>
+                
+                <div class="form-group">
+                    <label for="maxWaiting">待合席数（最大人数）</label>
+                    <select id="maxWaiting" class="form-input">
+                        <option value="1">1人</option>
+                        <option value="2">2人</option>
+                        <option value="3" selected>3人</option>
+                        <option value="4">4人</option>
+                        <option value="5">5人</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="seatCount">施術席数</label>
+                    <select id="seatCount" class="form-input">
+                        <option value="1">1席</option>
+                        <option value="2" selected>2席</option>
+                        <option value="3">3席</option>
+                        <option value="4">4席</option>
+                        <option value="5">5席</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- サービス時間設定 -->
+            <section class="settings-section">
+                <h2>⏱️ メニュー設定</h2>
+                
+                <div class="service-setting-card">
+                    <div class="service-icon">✂️</div>
+                    <div class="service-fields">
+                        <div class="form-group">
+                            <label for="cutName">メニュー名</label>
+                            <input type="text" id="cutName" class="form-input" value="カット" placeholder="カット">
+                        </div>
+                        <div class="form-group">
+                            <label for="cutTime">所要時間（分）</label>
+                            <input type="number" id="cutTime" class="form-input" value="60" min="10" max="300">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-setting-card special1">
+                    <div class="service-icon">⭐</div>
+                    <div class="service-fields">
+                        <div class="form-group">
+                            <label for="special1Name">メニュー名</label>
+                            <input type="text" id="special1Name" class="form-input" value="特殊1" placeholder="パーマ等">
+                        </div>
+                        <div class="form-group">
+                            <label for="special1Time">所要時間（分）</label>
+                            <input type="number" id="special1Time" class="form-input" value="180" min="10" max="300">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-setting-card special2">
+                    <div class="service-icon">💫</div>
+                    <div class="service-fields">
+                        <div class="form-group">
+                            <label for="special2Name">メニュー名</label>
+                            <input type="text" id="special2Name" class="form-input" value="特殊2" placeholder="カラー等">
+                        </div>
+                        <div class="form-group">
+                            <label for="special2Time">所要時間（分）</label>
+                            <input type="number" id="special2Time" class="form-input" value="120" min="10" max="300">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 営業時間設定 -->
+            <section class="settings-section">
+                <h2>🕐 営業時間</h2>
+                <p class="section-note">各曜日の営業時間を設定してください。特別な営業日にはラベルや注釈を追加できます。</p>
+                
+                <div id="businessHoursContainer">
+                    <!-- JavaScriptで生成 -->
+                </div>
+            </section>
+
+            <!-- 祝日設定 -->
+            <section class="settings-section">
+                <h2>🎌 祝日設定</h2>
+                
+                <div class="form-group">
+                    <label>祝日の営業時間</label>
+                    <div class="holiday-hours-inputs">
+                        <div class="time-input-inline">
+                            <input type="time" id="holidayOpen" class="form-input" value="08:30">
+                            <span>～</span>
+                            <input type="time" id="holidayClose" class="form-input" value="18:00">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>祝日に通常営業を適用しない曜日</label>
+                    <p class="field-note">チェックした曜日が祝日の場合、その曜日の営業時間ではなく上記の祝日営業時間が適用されます</p>
+                    <div class="checkbox-grid holiday-override-grid">
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="0">
+                            <span>日</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="1">
+                            <span>月</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="2">
+                            <span>火</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="3">
+                            <span>水</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="4" checked>
+                            <span>木</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="5">
+                            <span>金</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="holidayOverride" value="6">
+                            <span>土</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 定休日設定 -->
+            <section class="settings-section">
+                <h2>🚫 定休日</h2>
+                
+                <div class="form-group">
+                    <label>毎週の定休日</label>
+                    <div class="checkbox-grid">
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="0">
+                            <span>日</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="1" checked>
+                            <span>月</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="2">
+                            <span>火</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="3">
+                            <span>水</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="4">
+                            <span>木</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="5">
+                            <span>金</span>
+                        </label>
+                        <label class="day-checkbox">
+                            <input type="checkbox" name="closedDay" value="6">
+                            <span>土</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>特定週の休業日</label>
+                    <p class="field-note">例: 第2・第3火曜日を休業にする場合</p>
+                    <div id="weeklyClosedContainer">
+                        <!-- JavaScriptで生成 -->
+                    </div>
+                    <button type="button" class="add-btn" id="addWeeklyClosed">＋ 追加</button>
+                </div>
+            </section>
+
+            <!-- 保存ボタン -->
+            <div class="settings-actions">
+                <button class="save-settings-btn" id="saveSettingsBtn">
+                    💾 設定を保存
+                </button>
+                <button class="reset-btn" id="resetSettingsBtn">
+                    🔄 初期設定に戻す
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- トースト通知 -->
+    <div class="toast" id="toast">
+        <span id="toastMessage">保存しました</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="settings.js"></script>
+</body>
+
+</html>

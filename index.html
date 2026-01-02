@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>理容室 待合状況</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- ============================================ -->
+        <!-- お客様向け画面 -->
+        <!-- ============================================ -->
+        <div id="customerView" class="view active">
+            <header class="header">
+                <div class="shop-info">
+                    <h1 id="shopNameDisplay">✂️ ヘアーステージ K&M</h1>
+                    <div class="shop-address" id="shopAddressDisplay">📍 京都府京都市伏見区久我本町11-172</div>
+                    <a class="shop-phone-link" id="shopPhoneDisplay" href="tel:" style="display: none;">
+                        📞 <span class="phone-number"></span>
+                    </a>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <!-- 営業状態カード -->
+                <div class="status-card" id="statusCard">
+                    <div class="status-badge" id="statusBadge">
+                        <span class="status-dot"></span>
+                        <span class="status-text" id="statusText">営業中</span>
+                    </div>
+                    
+                    <div class="today-hours" id="todayHours">
+                        <div class="hours-label">本日の営業時間</div>
+                        <div class="hours-time" id="todayTime">9:30 - 19:00</div>
+                    </div>
+                </div>
+
+                <!-- 営業時間外表示 -->
+                <div class="closed-view" id="closedView" style="display: none;">
+                    <div class="closed-icon">🌙</div>
+                    <h2>現在は営業時間外です</h2>
+                    <div class="next-open">
+                        <div class="next-label">次回営業</div>
+                        <div class="next-time" id="nextOpeningTime">--</div>
+                    </div>
+                </div>
+
+                <!-- 営業中の情報 -->
+                <div id="openView">
+                    <!-- 待ち人数（大きく表示） -->
+                    <div class="waiting-card">
+                        <div class="waiting-label">現在の待ち人数</div>
+                        <div class="waiting-number">
+                            <span id="waitingCount" class="big-number">0</span>
+                            <span class="unit">人</span>
+                        </div>
+                        <div class="waiting-note" id="waitingNote">（待合席は3人まで）</div>
+                    </div>
+
+                    <!-- 施術中の情報 -->
+                    <div class="service-card" id="currentServiceSection">
+                        <div class="service-header-label">💈 施術状況</div>
+                        <div class="seats-status" id="seatsStatus">
+                            <!-- JavaScriptで動的に生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 次の案内時間 -->
+                    <div class="time-card">
+                        <div class="time-label">次のご案内予測時間</div>
+                        <div class="time-range" id="serviceTimeRange">--:-- ～ --:--頃</div>
+                        <div class="time-note" id="waitTimeNote"></div>
+                    </div>
+
+                    <!-- おすすめ状況 -->
+                    <div class="recommendation" id="recommendation">
+                        <div class="rec-icon" id="recIcon">✅</div>
+                        <div class="rec-text" id="recommendationText">今すぐご来店いただけます</div>
+                    </div>
+                </div>
+
+                <!-- 営業時間案内 -->
+                <div class="info-card">
+                    <h3>📅 営業時間</h3>
+                    <div class="hours-table" id="businessHoursDisplay">
+                        <!-- JavaScriptで動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 特別営業日（あれば表示） -->
+                <div class="special-dates-customer" id="specialDatesCustomer" style="display: none;">
+                    <h3>📢 お知らせ</h3>
+                    <div id="specialDatesList"></div>
+                </div>
+
+                <!-- 管理者リンク（小さめ） -->
+                <div class="admin-link-area">
+                    <button class="admin-link-btn" id="adminLinkBtn">🔧 管理者画面</button>
+                    <div class="last-update">
+                        更新: <span id="lastUpdateTime">--:--</span>
+                        <button class="refresh-btn" id="refreshBtn">🔄</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 管理者画面 -->
+        <!-- ============================================ -->
+        <div id="adminView" class="view">
+            <header class="admin-header">
+                <button class="back-btn" id="backBtn">← 戻る</button>
+                <h1>管理者画面</h1>
+            </header>
+
+            <main class="admin-main">
+                <!-- 現在の状況サマリー -->
+                <div class="admin-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">状態</span>
+                        <span class="summary-value" id="adminStatus">営業中</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">待ち</span>
+                        <span class="summary-value" id="adminWaitCount">0人</span>
+                    </div>
+                </div>
+
+                <!-- 臨時休業チェック -->
+                <div class="admin-section">
+                    <label class="checkbox-large" id="temporaryClosureLabel">
+                        <input type="checkbox" id="temporaryClosureCheckbox">
+                        <span class="checkbox-text">🚫 本日臨時休業</span>
+                    </label>
+                </div>
+
+                <!-- 待ち人数コントロール（大きなボタン） -->
+                <div class="admin-section">
+                    <h2>👥 待ち人数 <span class="limit-note" id="waitingLimitNote">（最大3人）</span></h2>
+                    <div class="counter-control">
+                        <button class="counter-btn minus" id="decreaseCount">−</button>
+                        <div class="counter-display">
+                            <span id="adminCountDisplay">0</span>
+                            <span class="counter-unit">人</span>
+                        </div>
+                        <button class="counter-btn plus" id="increaseCount">＋</button>
+                    </div>
+                    <div class="quick-buttons" id="quickButtons">
+                        <!-- JavaScriptで動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 席の管理 -->
+                <div class="admin-section">
+                    <h2>💺 席の管理</h2>
+                    <div id="seatsContainer">
+                        <!-- JavaScriptで動的に生成 -->
+                    </div>
+                </div>
+
+                <!-- 詳細設定（折りたたみ） -->
+                <details class="admin-details">
+                    <summary>⚙️ 詳細設定</summary>
+                    
+                    <!-- 特別営業日設定 -->
+                    <div class="details-section">
+                        <h3>特別営業日の追加</h3>
+                        <div class="form-group">
+                            <label>日付</label>
+                            <input type="date" id="specialDate" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-small">
+                                <input type="checkbox" id="isClosedCheckbox">
+                                臨時休業
+                            </label>
+                        </div>
+                        <div class="form-group time-inputs" id="timeInputs">
+                            <div class="time-input">
+                                <label>開始</label>
+                                <input type="time" id="specialOpen" value="09:30" class="form-input">
+                            </div>
+                            <div class="time-input">
+                                <label>終了</label>
+                                <input type="time" id="specialClose" value="19:00" class="form-input">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>メモ</label>
+                            <input type="text" id="specialNote" placeholder="例: 年末特別営業" class="form-input">
+                        </div>
+                        <button class="action-btn" id="addSpecialBtn">追加する</button>
+                        
+                        <div id="registeredSpecialDates" class="registered-dates" style="display: none;">
+                            <h4>登録済み</h4>
+                            <div id="specialDatesListAdmin"></div>
+                        </div>
+                    </div>
+
+                    <!-- パスワード変更 -->
+                    <div class="details-section">
+                        <h3>パスワード変更</h3>
+                        <div class="form-group">
+                            <label>現在のパスワード</label>
+                            <input type="password" id="currentPassword" class="form-input" maxlength="4" inputmode="numeric" placeholder="4桁">
+                        </div>
+                        <div class="form-group">
+                            <label>新しいパスワード</label>
+                            <input type="password" id="newPassword" class="form-input" maxlength="4" inputmode="numeric" placeholder="4桁">
+                        </div>
+                        <div class="form-group">
+                            <label>確認</label>
+                            <input type="password" id="confirmPassword" class="form-input" maxlength="4" inputmode="numeric" placeholder="4桁">
+                        </div>
+                        <button class="action-btn" id="changePasswordBtn">変更する</button>
+                    </div>
+                </details>
+
+                <!-- 保存ボタン -->
+                <button class="save-btn" id="saveBtn">
+                    💾 保存してお客様画面へ
+                </button>
+
+                <!-- 設定画面リンク -->
+                <a href="settings.html" class="settings-link">
+                    ⚙️ 店舗設定を変更する
+                </a>
+            </main>
+        </div>
+    </div>
+
+    <!-- トースト通知 -->
+    <div class="toast" id="toast">
+        <span id="toastMessage">保存しました</span>
+    </div>
+
+    <!-- パスワードモーダル -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">🔒</div>
+                <h2>パスワード入力</h2>
+            </div>
+            <div class="pin-container">
+                <input type="password" class="pin-input" id="pin1" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input type="password" class="pin-input" id="pin2" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input type="password" class="pin-input" id="pin3" maxlength="1" inputmode="numeric" autocomplete="off">
+                <input type="password" class="pin-input" id="pin4" maxlength="1" inputmode="numeric" autocomplete="off">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancelPasswordBtn">キャンセル</button>
+                <button class="modal-btn confirm" id="confirmPasswordBtn">確認</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
