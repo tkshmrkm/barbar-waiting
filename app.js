@@ -690,7 +690,8 @@ function getEarliestEndingService() {
     services.forEach(service => {
         const elapsed = Math.floor((Date.now() - service.startTime) / 60000);
         const duration = SERVICE_TIMES[service.type] || 60;
-        const remaining = Math.max(0, duration - elapsed);
+        // 最低5分（店主が終了を押し忘れる可能性を考慮）
+        const remaining = Math.max(5, duration - elapsed);
         
         if (remaining < minRemaining) {
             minRemaining = remaining;
@@ -968,7 +969,8 @@ function updateServiceDisplay() {
         if (service) {
             const elapsed = Math.floor((Date.now() - service.startTime) / 60000);
             const duration = SERVICE_TIMES[service.type] || 60;
-            const remaining = Math.max(0, duration - elapsed);
+            // 最低5分（店主が終了を押し忘れる可能性を考慮）
+            const remaining = Math.max(5, duration - elapsed);
             seatInfos.push({
                 index: i,
                 type: service.type,
@@ -1296,7 +1298,8 @@ function updateSeatCards() {
             
             const elapsed = Math.floor((Date.now() - service.startTime) / 60000);
             const duration = SERVICE_TIMES[service.type] || 60;
-            const remaining = Math.max(0, duration - elapsed);
+            // 最低5分（終了ボタン押し忘れを考慮）
+            const remaining = Math.max(5, duration - elapsed);
             
             const icon = typeIcons[service.type] || '';
             const name = serviceNames[service.type] || service.type;
