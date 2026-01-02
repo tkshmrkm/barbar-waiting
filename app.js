@@ -1074,9 +1074,9 @@ function updateServiceTimeRange() {
     const minWait = roundTo5(Math.floor(totalWait * 0.9));
     const maxWait = roundTo5(Math.ceil(totalWait * 1.1));
     
-    // 閉店時間チェック
-    const endTime = currentTime + maxWait + SERVICE_TIMES.cut;
-    if (endTime > closeTime) {
+    // 閉店時間チェック（カットが始まる時間で判定）
+    const serviceStartTime = currentTime + maxWait;
+    if (serviceStartTime > closeTime) {
         const closeTimeStr = `${String(closeH).padStart(2, '0')}:${String(closeM).padStart(2, '0')}`;
         serviceTimeRange.textContent = `${closeTimeStr}閉店のため受付終了`;
         if (waitTimeNote) waitTimeNote.textContent = '';
