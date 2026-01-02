@@ -261,9 +261,11 @@ function renderQuickButtons() {
             btn.textContent = `${i}人`;
         }
         btn.dataset.count = i;
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', async () => {
             state.waitingCount = i;
+            await saveState();
             updateAdminView();
+            updateCustomerView();
         });
         container.appendChild(btn);
     }
@@ -1405,20 +1407,24 @@ function attachEventListeners() {
     const increaseBtn = document.getElementById('increaseCount');
     
     if (decreaseBtn) {
-        decreaseBtn.addEventListener('click', () => {
+        decreaseBtn.addEventListener('click', async () => {
             if (state.waitingCount > 0) {
                 state.waitingCount--;
+                await saveState();
                 updateAdminView();
+                updateCustomerView();
             }
         });
     }
     
     if (increaseBtn) {
-        increaseBtn.addEventListener('click', () => {
+        increaseBtn.addEventListener('click', async () => {
             const maxCount = shopSettings.waiting?.maxCount || 3;
             if (state.waitingCount < maxCount) {
                 state.waitingCount++;
+                await saveState();
                 updateAdminView();
+                updateCustomerView();
             } else {
                 showToast(`待合は${maxCount}人までです`);
             }
